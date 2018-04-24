@@ -1,6 +1,8 @@
 [package]
 name = "KCoin"
 version = "0.1.0"
-authors = ["Gogs <gogs@fake.local>"]
+authors = ["Kimi <Kimikan@local>"]
 
 [dependencies]
+libsecp256k1 = "0.1.13"
+sha3 = "0.7.3"
