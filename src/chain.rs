@@ -15,9 +15,6 @@ pub struct Block {
 use std::io;
 
 impl Block {
-
-
-    pub fn new()->io::Result<Block> {
-        Err()
+    pub fn new() {
     }
 }

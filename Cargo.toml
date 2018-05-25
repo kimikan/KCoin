@@ -1,8 +1,12 @@
 [package]
-name = "KCoin"
+name = "kcoin"
 version = "0.1.0"
 authors = ["Kimi <Kimikan@local>"]
 
 [dependencies]
 libsecp256k1 = "0.1.13"
 sha3 = "0.7.3"
+serde_derive = "*"
+bincode = "*"
+serde = "*"
+base58="*"
