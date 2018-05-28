@@ -13,7 +13,6 @@ pub struct Transaction {
     //if this member really needed
     //it's a question
     _best_parent: Option<HashType>,
-
 }
 
 impl Transaction {
@@ -21,6 +20,15 @@ impl Transaction {
         None
     }
 
+    pub fn checked_sons(&self) -> bool {
+        self._best_son.is_some()
+    }
+
+    pub fn checked_parents(&self) -> bool {
+        self._best_parent.is_some()
+    }
+
+    pub fn update_hash(&self) {}
 
     fn test(&self) {}
 }

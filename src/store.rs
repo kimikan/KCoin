@@ -7,8 +7,15 @@ use std::io;
 #[derive(Debug)]
 pub struct Store {
     _leafs: Vec<HashType>,
+    _genesis: HashType,
 
     _datas: HashMap<HashType, Vec<u8>>,
+}
+
+impl Drop for Store {
+    fn drop(&mut self) {
+        println!("do some legacy clean work")
+    }
 }
 
 impl Store {
@@ -16,6 +23,7 @@ impl Store {
         Store {
             _leafs: Default::default(),
             _datas: Default::default(),
+            _genesis: Default::default(),
         }
     }
 
@@ -24,9 +32,7 @@ impl Store {
     }
 
     pub fn remove_leaf(&mut self, v: &HashType) {
-        self._leafs.retain(|f| {
-            f != v
-        });
+        self._leafs.retain(|f| f != v);
     }
 
     pub fn add_leaf(&mut self, v: HashType) {
@@ -38,8 +44,8 @@ impl Store {
         self._datas.get(k)
     }
 
-    pub fn set_data(&mut self, k: &HashType, v: Vec<u8>) {
-        self._datas[k] = v;
+    pub fn set_data(&mut self, k: HashType, v: Vec<u8>) {
+        self._datas.insert(k, v);
     }
 
     pub fn remove(&mut self, k: &HashType) -> bool {
@@ -48,5 +54,16 @@ impl Store {
         }
 
         false
+    }
+
+    //genesis
+    pub fn get_genesis_hash(&self) -> &HashType {
+        &self._genesis
+    }
+
+    pub fn set_genesis_hash(&mut self, v: HashType) {
+        if self._genesis != v {
+            self._genesis = v;
+        }
     }
 }

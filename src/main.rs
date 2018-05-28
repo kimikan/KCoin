@@ -1,17 +1,25 @@
-
-extern crate sha3;
-extern crate secp256k1;
 extern crate base58;
 extern crate generic_array;
-extern crate typenum;
+extern crate secp256k1;
+extern crate sha3;
 
-mod trans;
 mod chain;
 mod store;
+mod trans;
 mod utils;
 
 fn main() {
+    let str = "hello world".as_bytes();
+    let str2 = "hello2 world".as_bytes();
 
+    let x1 = utils::slice_to_base58(str2);
+    let x2 = utils::slice2_to_base58(str, str2);
+
+    println!("{:?}", x1);
+    println!("{:?}", x2);
+}
+
+fn main2() {
     let str = "hello world".as_bytes();
     let str2 = "hello2 world".as_bytes();
     let str3 = "hello2 world3".as_bytes();
@@ -30,5 +38,4 @@ fn main() {
     println!("{:?}", store);
     store.remove_leaf(&x1);
     println!("{:?}", store);
-
 }
