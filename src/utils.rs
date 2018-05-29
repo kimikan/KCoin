@@ -31,3 +31,32 @@ pub fn slice2_to_base58(bs1: &[u8], bs2: &[u8]) -> String {
         hasher.input(bs2);
     })
 }
+
+pub fn slice3_to_base58(bs1: &[u8], bs2: &[u8], bs3: &[u8]) -> String {
+    to_base58(|mut hasher| {
+        hasher.input(bs1);
+        hasher.input(bs2);
+        hasher.input(bs3);
+    })
+}
+
+use std::io;
+use serde;
+
+///serde::Result => io::Result.
+pub fn serialize<T: ?Sized>(value: &T) -> io::Result<Vec<u8>>
+    where
+        T: serde::Serialize,
+{
+    use bincode;
+    let r = bincode::serialize(value);
+    match r {
+        Ok(t) => {
+            Ok(t)
+        }
+        Err(e) => {
+            println!("serialize error: {:?}", e);
+            Err(io::Error::from(io::ErrorKind::UnexpectedEof))
+        }
+    }
+}
