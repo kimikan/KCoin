@@ -1,6 +1,6 @@
+use serde;
 use std::io;
 use utils::HashType;
-use serde;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Transaction {
@@ -42,33 +42,13 @@ impl Transaction {
     }
 
     pub fn try_from(value: &[u8]) -> io::Result<Self> {
-        use bincode;
-        let r = bincode::deserialize(value);
-
-        match r {
-            Ok(t) => {
-                return Ok(t);
-            },
-            Err(e) => {
-                println!("deserialize error: {:?}", e);
-                return Err(io::Error::from(io::ErrorKind::InvalidInput));
-            }
-        };
+        use utils;
+        utils::deserialize(value)
     }
 
     pub fn try_into(&self) -> io::Result<Vec<u8>> {
-        use bincode;
-        let r = bincode::serialize(self);
-
-        match r {
-            Ok(t) => {
-                return Ok(t);
-            },
-            Err(e) => {
-                println!("serialize error: {:?}", e);
-                return Err(io::Error::from(io::ErrorKind::UnexpectedEof));
-            }
-        };
+        use utils;
+        utils::serialize(self)
     }
 
     pub fn checked_sons(&self) -> bool {
@@ -83,10 +63,11 @@ impl Transaction {
     //it should include parents in some way
     pub fn update_hash(&mut self) -> io::Result<()> {
         use utils;
-        let parent_buf = utils::serialize(&self._parents)?;
-        let best_parent_buf = utils::serialize(&self._best_parent)?;
-        let payload_buf = utils::serialize(&self._payload)?;
-        let hash = utils::slice3_to_base58(&parent_buf, &best_parent_buf, &payload_buf);
+        let bs1 = utils::serialize(&self._parents)?;
+        let bs2 = utils::serialize(&self._best_parent)?;
+        let bs3 = utils::serialize(&self._payload)?;
+
+        let hash = utils::slice3_to_base58(&bs1, &bs2, &bs3);
         self._hash_value = hash;
 
         Ok(())

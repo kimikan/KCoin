@@ -7,8 +7,8 @@ extern crate sha3;
 extern crate serde_derive;
 
 extern crate bincode;
-extern crate serde_json;
 extern crate serde;
+extern crate serde_json;
 
 mod chain;
 mod store;
@@ -22,13 +22,18 @@ fn main() {
     let x1 = utils::slice_to_base58(str2);
     let x2 = utils::slice2_to_base58(str, str2);
 
-    let ps = vec!["dafa".to_owned(), "dfaf".to_owned(), "dfd".to_owned(), "cfd".to_owned()];
+    let ps = vec![
+        "dafa".to_owned(),
+        "dfaf".to_owned(),
+        "dfd".to_owned(),
+        "cfd".to_owned(),
+    ];
 
     println!("{:?}", x1);
     println!("{:?}", x2);
 
     let mut transaction = trans::Transaction::new(ps);
-    transaction.update_hash();
+    transaction.update_hash().unwrap();
     let bytes = transaction.try_into().unwrap();
     println!("{:?}", bytes.len());
 
