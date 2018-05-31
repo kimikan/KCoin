@@ -6,12 +6,12 @@ fn to_base58<F>(f: F) -> String
     where
         F: Fn(&mut Sha3_256),
 {
-    let mut hasher = Sha3_256::default();
+    let mut hash = Sha3_256::default();
 
-    f(&mut hasher);
+    f(&mut hash);
 
     // read hash digest
-    let res = hasher.result();
+    let res = hash.result();
     //println!("{:x}", out);
     let buf = res.as_slice();
 
@@ -20,23 +20,23 @@ fn to_base58<F>(f: F) -> String
 }
 
 pub fn slice_to_base58(bytes: &[u8]) -> String {
-    to_base58(|mut hasher| {
-        hasher.input(bytes);
+    to_base58(|mut hash| {
+        hash.input(bytes);
     })
 }
 
 pub fn slice2_to_base58(bs1: &[u8], bs2: &[u8]) -> String {
-    to_base58(|mut hasher| {
-        hasher.input(bs1);
-        hasher.input(bs2);
+    to_base58(|mut hash| {
+        hash.input(bs1);
+        hash.input(bs2);
     })
 }
 
 pub fn slice3_to_base58(bs1: &[u8], bs2: &[u8], bs3: &[u8]) -> String {
-    to_base58(|mut hasher| {
-        hasher.input(bs1);
-        hasher.input(bs2);
-        hasher.input(bs3);
+    to_base58(|mut hash| {
+        hash.input(bs1);
+        hash.input(bs2);
+        hash.input(bs3);
     })
 }
 
